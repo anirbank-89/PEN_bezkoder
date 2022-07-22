@@ -8,10 +8,24 @@ dotenv.config();
 
 var app = express();
 
-app.use(cors());
+var corsOptions = {
+    origin: "http://localhost:8081"
+};
+
+app.use(cors(corsOptions));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+const DB = require('./models/index');
+
+DB.sequilize.sync()
+    .then(() => {
+        console.log("Database synced");
+    })
+    .catch((err) => {
+        console.log("Failed to sync db due to ", err.message);
+    });
 
 app.use('/', indexRoute);
 
@@ -22,7 +36,7 @@ app.use('/', indexRoute);
 
 // app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
     console.log(`App is listening at port ${PORT}`);
