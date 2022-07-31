@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    var Tutorial = sequelize.define("tutorial", {
+    var Tutorial = sequelize.define("tutorials", {
         title: {
             type: Sequelize.STRING
             // required: true
@@ -8,7 +8,8 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING
         },
         published: {
-            type: Sequelize.BOOLEAN
+            type: Sequelize.BOOLEAN,
+            defaultValue: false
         }
     });
 

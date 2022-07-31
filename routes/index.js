@@ -10,6 +10,13 @@ router.get('/', (req,res)=>{
     res.send("Hello Tutorial!");
 });
 
-router.post('/create', TUTORIAL.create);
+router.post('/tutorials', TUTORIAL.createTutorial);
+router.get('/tutorials', TUTORIAL.findAll);
+router.get('/tutorials/:id', TUTORIAL.findOne);
+router.put('/tutorials/:id', TUTORIAL.update);
+router.delete('/tutorials/:id', TUTORIAL.deleteTutorial);
+router.delete('/tutorials', TUTORIAL.deleteAll);
+
+router.get('/published-tutorials', TUTORIAL.findAllPublished);
 
 module.exports = router;
