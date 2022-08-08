@@ -13,7 +13,7 @@ router.get('/', (req,res)=>{
 router.post('/tutorials', TUTORIAL.createTutorial);
 router.get('/tutorials', TUTORIAL.findAll);
 router.get('/tutorials/:id', TUTORIAL.findOne);
-router.put('/tutorials/:id', TUTORIAL.update);
+router.put('/tutorials/:id', TUTORIAL.editTutorial);
 router.delete('/tutorials/:id', TUTORIAL.deleteTutorial);
 router.delete('/tutorials', TUTORIAL.deleteAll);
 

@@ -18,5 +18,6 @@ db.sequilize = SEQUELIZE;
 
 // Table for the project - syntax 'db.<table_name>'
 db.tutorial = require('./tutorial')(SEQUELIZE, Sequelize);
+db.tutor = require('./tutor')(SEQUELIZE, Sequelize);
 
 module.exports = db;

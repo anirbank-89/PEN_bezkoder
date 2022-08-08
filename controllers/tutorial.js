@@ -1,8 +1,9 @@
+const { Op } = require('sequelize');
 const DB = require('../models/index');
 const TUTORIAL = DB.tutorial;
 const OP = DB.Sequelize.Op;
 
-var createTutorial = async (req,res) => {
+var createTutorial = async (req, res) => {
     // Validate request
     if (!req.body.title || !req.body.description) {
         res.status(400).send({
@@ -21,11 +22,11 @@ var createTutorial = async (req,res) => {
 
     // Save the data in database table
     TUTORIAL.create(saveData)
-        .then(data => {
+        .then(docs => {
             res.status(201).json({
                 status: true,
                 message: "Data saved successfully.",
-                data: data
+                data: docs
             });
         })
         .catch(err => {
@@ -37,23 +38,107 @@ var createTutorial = async (req,res) => {
         })
 }
 
-var findAll = async (req,res) => {}
+// Retrieve all Tutorials from the database.
+var findAll = async (req, res) => {
+    const title = req.query.title;
+    var condition = title ? { title: { [Op.iLike]: `%${title}%` } } : "";
 
-var findOne = async (req,res) => {}
+    await TUTORIAL.findAll({ where: condition })
+        .then(docs => {
+            res.status(200).json({
+                status: true,
+                message: "Data successfully get.",
+                data: docs
+            });
+        })
+        .catch(err => {
+            res.status(500).json({
+                status: false,
+                message: "Server error. Please try again.",
+                error: err.message
+            });
+        });
+}
 
-var update = async (req,res) => {}
+// Find a single Tutorial with an id
+var findOne = async (req, res) => {
+    var id = req.params.id;
 
-var deleteTutorial = async (req,res) => {}
+    await TUTORIAL.findByPk(id)
+        .then(docs => {
+            if (docs == null || typeof docs == "undefined") {
+                res.status(404).send({ 
+                    message: `Cannot find Tutorial with id=${id}.`
+                });
+            }
+            else {
+                res.status(200).json({
+                    status: true,
+                    message: "Data successfully get.",
+                    data: docs
+                });
+            }
+        })
+        .catch(err => {
+            res.status(500).json({
+                status: false,
+                message: "Invalid id. Server error.",
+                error: err.message
+            });
+        });
+}
 
-var deleteAll = async (req,res) => {}
+// Update a Tutorial by the id in the request
+var editTutorial = async (req, res) => { 
+    // Validate request
+    if (!req.body.title || !req.body.description) {
+        res.status(400).send({
+            message: "Title and content can not be empty!"
+        });
+        return;
+    }
 
-var findAllPublished = async (req,res) => {}
+    var id = req.params.id;
+
+    TUTORIAL.update(
+        req.body,
+        { where: { id: id } }
+    )
+        .then(docs_num => {
+            if (docs_num == 1) {
+                res.status(201).json({
+                    status: true,
+                    message: "Data updated successfully.",
+                    documents: docs_num[0]
+                });
+            }
+            else {
+                res.status(404).send({
+                    message: `Document with id ${id} not found.`
+                })
+            }
+        })
+        .catch(err => {
+            res.status(501).json({
+                status: false,
+                message: "Invalid id. Server error.",
+                error: err.message
+            });
+        });
+}
+
+// Delete a Tutorial with the specified id in the request
+var deleteTutorial = async (req, res) => { }
+
+var deleteAll = async (req, res) => { }
+
+var findAllPublished = async (req, res) => { }
 
 module.exports = {
     createTutorial,
     findAll,
     findOne,
-    update,
+    editTutorial,
     deleteTutorial,
     deleteAll,
     findAllPublished
