@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: false }));
 
 const DB = require('./models/index');
 
-DB.sequilize.sync()
+DB.sequilize.sync()   // sync({ force: true }) - to drop existing tables and re-sync database
     .then(() => {
         console.log("Database synced");
     })

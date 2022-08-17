@@ -3,6 +3,24 @@ const DB = require('../models/index');
 const TUTORIAL = DB.tutorial;
 const OP = DB.Sequelize.Op;
 
+/** =================== Utility functions =================== */
+function getPaginationParams(page, size) {
+    var limit = size ? +size : 3;
+    var offset = page ? page * limit : 0;
+
+    return { limit, offset }
+}
+
+function getPagingData(data, page, limit) {
+    const { count: totalItems, rows: tutorials } = data;
+    var currentPage = page ? +page : 0;
+    var totalPages = Math.ceil(totalItems / limit);
+
+    return { totalItems, tutorials, totalPages, currentPage }
+}
+/** ================= Utility functions end ================= */
+
+/** ===================== API Callbacks ===================== */
 var createTutorial = async (req, res) => {
     // Validate request
     if (!req.body.title || !req.body.description) {
@@ -40,15 +58,18 @@ var createTutorial = async (req, res) => {
 
 // Retrieve all Tutorials from the database.
 var findAll = async (req, res) => {
-    const title = req.query.title;
+    const { page, size, title } = req.query;
     var condition = title ? { title: { [Op.iLike]: `%${title}%` } } : "";
+    const { limit, offset } = getPaginationParams(page, size);
 
-    await TUTORIAL.findAll({ where: condition })
+    await TUTORIAL.findAndCountAll({ where: condition, limit, offset })
         .then(docs => {
+            let response = getPagingData(docs, page, limit);
+
             res.status(200).json({
                 status: true,
                 message: "Data successfully get.",
-                data: docs
+                data: response
             });
         })
         .catch(err => {
@@ -183,6 +204,7 @@ var findAllPublished = async (req, res) => {
             });
         });
 }
+/** =================== API Callbacks end =================== */
 
 module.exports = {
     createTutorial,
