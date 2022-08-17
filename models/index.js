@@ -20,4 +20,7 @@ db.sequilize = SEQUELIZE;
 db.tutorial = require('./tutorial')(SEQUELIZE, Sequelize);
 db.tutor = require('./tutor')(SEQUELIZE, Sequelize);
 
+db.admin = require('./admin')(SEQUELIZE, Sequelize);
+db.category = require('./category')(SEQUELIZE, Sequelize);
+
 module.exports = db;

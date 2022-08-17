@@ -19,4 +19,6 @@ router.delete('/tutorials', TUTORIAL.deleteAll);
 
 router.get('/published-tutorials', TUTORIAL.findAllPublished);
 
+router.use('/v1', require('./v1'));
+
 module.exports = router;

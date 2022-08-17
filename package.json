@@ -22,9 +22,12 @@
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "morgan": "^1.10.0",
+    "node-input-validator": "^4.5.0",
     "nodemon": "^2.0.19",
+    "password-hash": "^1.2.2",
     "pg": "^8.7.3",
     "pg-hstore": "^2.3.4",
-    "sequelize": "^6.21.3"
+    "sequelize": "^6.21.3",
+    "uuid": "^8.3.2"
   }
 }
