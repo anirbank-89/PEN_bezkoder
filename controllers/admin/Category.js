@@ -1,4 +1,3 @@
-const { Op } = require("sequelize");
 const { Validator } = require("node-input-validator");
 
 const DB = require("../../models/index");
@@ -67,11 +66,78 @@ var viewAll = async (req, res) => {
                 error: err.message
             });
         });
+}
 
+var update = async (req, res) => {
+    const V = new Validator(req.body, {
+        name: 'required',
+        content: 'required'
+    });
+    let matched = await V.check().then(val => val);
+
+    if (!matched) {
+        return res.status(400).send({ status: false, errors: V.errors });
+    }
+
+    var id = req.params.id;
     
+    CATEGORIES.update(
+        req.body,
+        { where: { id: id } }
+    )
+        .then(docs_num => {
+            if (docs_num.length == 1) {
+                res.status(201).json({
+                    status: true,
+                    message: "Data updated successfully.",
+                    documents_modified: docs_num[0]
+                });
+            }
+            else {
+                res.status(404).send({
+                    message: `Document with id ${id} not found.`
+                });
+            }
+        })
+        .catch(err => {
+            res.status(501).json({
+                status: false,
+                message: "Invalid id. Server error.",
+                error: err.message
+            });
+        });
+}
+
+var deleteCategory = async (req, res) => {
+    var id = req.params.id;
+
+    CATEGORIES.destroy({ where: { id: id } })
+        .then(docs_num => {
+            if (docs_num == 1) {
+                res.status(200).json({
+                    status: true,
+                    message: "Data deleted successfully.",
+                    documents_deleted: docs_num
+                });
+            }
+            else {
+                res.status(404).send({
+                    message: `Document with id ${id} not found.`
+                });
+            }
+        })
+        .catch(err => {
+            res.status(500).json({
+                status: false,
+                message: "Invalid id. Server error.",
+                error: err.message
+            });
+        })
 }
 
 module.exports = {
     create,
-    viewAll
+    viewAll,
+    update,
+    deleteCategory
 }

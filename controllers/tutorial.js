@@ -105,7 +105,7 @@ var editTutorial = async (req, res) => {
         { where: { id: id } }
     )
         .then(docs_num => {
-            if (docs_num == 1) {
+            if (docs_num.length == 1) {
                 res.status(201).json({
                     status: true,
                     message: "Data updated successfully.",
@@ -115,7 +115,7 @@ var editTutorial = async (req, res) => {
             else {
                 res.status(404).send({
                     message: `Document with id ${id} not found.`
-                })
+                });
             }
         })
         .catch(err => {

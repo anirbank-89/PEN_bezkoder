@@ -20,5 +20,7 @@ router.use((req, res, next) => {
 
 router.post('/category/Category', CATEGORY_CONTROLLER.create);
 router.get('/category/Category', CATEGORY_CONTROLLER.viewAll);
+router.put('/category/Category/:id', CATEGORY_CONTROLLER.update);
+router.delete('/category/Category/:id', CATEGORY_CONTROLLER.deleteCategory);
 
 module.exports = router;
