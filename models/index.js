@@ -1,4 +1,4 @@
-var dbConfig = require('../app/config');
+var dbConfig = require('../config/db.config');
 var Sequelize = require('sequelize');
 const SEQUELIZE = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     host: dbConfig.HOST,
@@ -22,5 +22,18 @@ db.tutor = require('./tutor')(SEQUELIZE, Sequelize);
 
 db.admin = require('./admin')(SEQUELIZE, Sequelize);
 db.category = require('./category')(SEQUELIZE, Sequelize);
+db.user = require('./user')(SEQUELIZE, Sequelize);
+db.role = require('./role')(SEQUELIZE, Sequelize);
+db.role.belongsToMany(db.user, {
+    through: "user_roles",
+    foreignKey: "roleId",
+    otherKey: "userId"
+});
+db.user.belongsToMany(db.role, {
+    through: "user_roles",
+    foreignKey: "userId",
+    otherKey: "roleId"
+});
+db.ROLES = ["User", "Seller"];
 
 module.exports = db;

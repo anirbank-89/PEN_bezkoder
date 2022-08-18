@@ -4,6 +4,8 @@ var dotenv = require('dotenv');
 var logger = require('morgan');
 
 var indexRoute = require('./routes/index');
+const DB = require('./models/index');
+
 dotenv.config();
 
 var app = express();
@@ -17,11 +19,12 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-const DB = require('./models/index');
+const Role = DB.role;
 
 DB.sequilize.sync()   // sync({ force: true }) - to drop existing tables and re-sync database
     .then(() => {
         console.log("Database synced");
+        // initial();
     })
     .catch((err) => {
         console.log("Failed to sync db due to ", err.message);
@@ -41,5 +44,17 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`App is listening at port ${PORT}`);
 });
+
+// function initial() {
+//     Role.create({
+//         id: 1,
+//         name: "User"
+//     });
+
+//     Role.create({
+//         id: 2,
+//         name: "Seller"
+//     });
+// }
 
 module.exports = app;
