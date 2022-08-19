@@ -2,10 +2,13 @@ var express = require('express');
 
 var router = express.Router();
 
+const { verifySignUp } = require('../service/index');
+
 const TUTORIAL = require('../controllers/tutorial');
+const USER_CONTROLLER = require('../controllers/auth/user');
 
 /** GET home page */
-router.get('/', (req,res)=>{
+router.get('/', (req, res) => {
     // console.log("Website is live!");
     res.send("Hello Tutorial!");
 });
@@ -21,4 +24,23 @@ router.get('/published-tutorials', TUTORIAL.findAllPublished);
 
 router.use('/v1', require('./v1'));
 
-module.exports = router;
+function userSignUp(app) {
+    app.use(function (req, res, next) {
+        res.header(
+            "Access-Control-Allow-Headers",
+            "x-access-token, Origin, Content-Type, Accept"
+        );
+        next();
+    });
+    app.post('/user/resgister', [
+        verifySignUp.checkDuplicateEmail,
+        verifySignUp.checkRolesExisted
+    ],
+        USER_CONTROLLER.signup
+    );
+}
+
+module.exports = {
+    router,
+    userSignUp
+}

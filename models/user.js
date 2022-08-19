@@ -15,13 +15,13 @@ module.exports = (sequelize, Sequelize) => {
         },
         country: {
             type: Sequelize.STRING,
-            defaultValue: [],
-            get: function () {
-                return this.getDataValue('country').split(',');    // JSON.parse(this.getDataValue('country'))
-            },
-            set: function (val) {
-                return this.setDataValue('country', val.join(','));// this.setDataValue('myArrayField', JSON.stringify(val));
-            }
+            // defaultValue: [],
+            // get: function () {
+            //     return this.getDataValue('country').split(',');    // JSON.parse(this.getDataValue('country'))
+            // },
+            // set: function (val) {
+            //     return this.setDataValue('country', val.join(','));// this.setDataValue('myArrayField', JSON.stringify(val));
+            // }
         },
         city: {
             type: Sequelize.STRING
@@ -34,13 +34,13 @@ module.exports = (sequelize, Sequelize) => {
         },
         include: {
             type: Sequelize.STRING,
-            defaultValue: [],
-            get: function () {
-                return this.getDataValue('include').split(',');    // JSON.parse(this.getDataValue('country'))
-            },
-            set: function (val) {
-                return this.setDataValue('include', val.join(','));// this.setDataValue('myArrayField', JSON.stringify(val));
-            }
+            // defaultValue: [],
+            // get: function () {
+            //     return this.getDataValue('include').split(',');    // JSON.parse(this.getDataValue('country'))
+            // },
+            // set: function (val) {
+            //     return this.setDataValue('include', val.join(','));// this.setDataValue('myArrayField', JSON.stringify(val));
+            // }
         },
         // token: {
         //     type: Sequelize.STRING,
@@ -75,7 +75,7 @@ module.exports = (sequelize, Sequelize) => {
         seller_approval: {
             type: Sequelize.BOOLEAN,
             defaultValue: false
-        },
+        }
     });
 
     return User;

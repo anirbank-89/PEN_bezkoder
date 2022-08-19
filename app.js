@@ -3,7 +3,7 @@ var cors = require('cors');
 var dotenv = require('dotenv');
 var logger = require('morgan');
 
-var indexRoute = require('./routes/index');
+const { router } = require('./routes/index');
 const DB = require('./models/index');
 
 dotenv.config();
@@ -30,7 +30,9 @@ DB.sequilize.sync()   // sync({ force: true }) - to drop existing tables and re-
         console.log("Failed to sync db due to ", err.message);
     });
 
-app.use('/', indexRoute);
+app.use('/', router);
+require('./routes/index').userSignUp;
+require('./routes/v1/user')(app);
 
 // const moduleURL = new URL(import.meta.url);
 // const __dirname = path.dirname(moduleURL.pathname);
