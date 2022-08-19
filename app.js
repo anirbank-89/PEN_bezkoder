@@ -31,7 +31,7 @@ DB.sequilize.sync()   // sync({ force: true }) - to drop existing tables and re-
     });
 
 app.use('/', router);
-require('./routes/index').userSignUp;
+require('./routes/index').userSignUp(app);
 require('./routes/v1/user')(app);
 
 // const moduleURL = new URL(import.meta.url);

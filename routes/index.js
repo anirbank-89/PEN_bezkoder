@@ -38,6 +38,7 @@ function userSignUp(app) {
     ],
         USER_CONTROLLER.signup
     );
+    app.post('/user/login', USER_CONTROLLER.signin);
 }
 
 module.exports = {
