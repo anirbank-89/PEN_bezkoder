@@ -14,7 +14,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING
         },
         country: {
-            type: Sequelize.STRING,
+            type: Sequelize.STRING
             // defaultValue: [],
             // get: function () {
             //     return this.getDataValue('country').split(',');    // JSON.parse(this.getDataValue('country'))
@@ -33,7 +33,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING
         },
         include: {
-            type: Sequelize.STRING,
+            type: Sequelize.STRING
             // defaultValue: [],
             // get: function () {
             //     return this.getDataValue('include').split(',');    // JSON.parse(this.getDataValue('country'))
